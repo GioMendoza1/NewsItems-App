@@ -1,0 +1,3 @@
+templateScript: /hello-magnolia/templates/components/newsItems.ftl
+renderType: freemarker
+title: News Items
