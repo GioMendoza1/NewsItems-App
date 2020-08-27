@@ -7,8 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,6 +27,7 @@ public class MainServlet extends HttpServlet {
     private final String[] timeMagCategories = {"Tech", "Sports", "Business", "Science"};
     private List<NewsItem> newsItems;
     private boolean isCached = false;
+    private final DateTimeFormatter ISOFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
@@ -48,6 +50,10 @@ public class MainServlet extends HttpServlet {
                 newsItems.addAll(scrapeUrl(baseURL + timeMagSections[i], timeMagCategories[i]));
             }
 
+            //Sort each news item by its published time
+            newsItems.sort(Comparator.comparing(NewsItem::getPublishedDate));
+            //Reverse list to have the most recent news articles first
+            Collections.reverse(newsItems);
             //Set flag for next request to use cached data
             isCached = true;
             out.print(convertToJSON(newsItems));
@@ -88,6 +94,7 @@ public class MainServlet extends HttpServlet {
                 newsItem.setPageUrl(baseURL + articleTitleURL.select("a").attr("href"));
                 newsItem.setExcerpt(articleExcerpt.text());
                 newsItem.setImgUrl(articleImgURL.select("div").attr("data-src"));
+		newsItem.setPublishedDate(articlePublishedDate(newsItem.getPageUrl()));
 
                 newsItems.add(newsItem);
             }
@@ -98,5 +105,21 @@ public class MainServlet extends HttpServlet {
             return null;
         }
 
+    }
+
+    /* Retrieves a specified article's published date and time */
+    protected LocalDateTime articlePublishedDate(String url) {
+        try {
+            //Fetch the website and store it in Document object
+            Document doc = Jsoup.connect(url).get();
+
+            Element articleDate = doc.getElementById("page-gtm-values");
+
+            return LocalDateTime.parse(articleDate.select("div").attr("data-content_published_date"), ISOFormatter);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
