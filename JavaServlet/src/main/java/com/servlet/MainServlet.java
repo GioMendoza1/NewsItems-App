@@ -94,7 +94,7 @@ public class MainServlet extends HttpServlet {
                 newsItem.setPageUrl(baseURL + articleTitleURL.select("a").attr("href"));
                 newsItem.setExcerpt(articleExcerpt.text());
                 newsItem.setImgUrl(articleImgURL.select("div").attr("data-src"));
-		newsItem.setPublishedDate(articlePublishedDate(newsItem.getPageUrl()));
+		        newsItem.setPublishedDate(articlePublishedDate(newsItem.getPageUrl()));
 
                 newsItems.add(newsItem);
             }
