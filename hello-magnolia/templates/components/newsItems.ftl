@@ -20,6 +20,9 @@
                             <a class="navbar-item" @click="filterChange('Business')">
                                 Business
                             </a>
+                            <a class="navbar-item" @click="filterChange('Science')">
+                                Science
+                            </a>
                             <hr class="navbar-divider">
                             <a class="navbar-item" @click="filterChange('Category')">
                                 Reset
@@ -86,17 +89,22 @@
                 }
                 if (this.currentFilter === "Tech") {
                     newsItems = newsItems.filter((newsItem) => {
-                        return newsItem.category === "Tech"
+                        return newsItem.category.indexOf("Tech") !== -1
                     })
                 }
-                if (this.currentFilter === "Sports") {
+                else if (this.currentFilter === "Sports") {
                     newsItems = newsItems.filter((newsItem) => {
-                        return newsItem.category === "Sports"
+                        return newsItem.category.indexOf("Sports") !== -1
                     })
                 }
-                if (this.currentFilter === "Business") {
+                else if (this.currentFilter === "Business") {
                     newsItems = newsItems.filter((newsItem) => {
-                        return newsItem.category === "Business"
+                        return newsItem.category.indexOf("Business") !== -1
+                    })
+                }
+                else if (this.currentFilter === "Science") {
+                    newsItems = newsItems.filter((newsItem) => {
+                        return newsItem.category.indexOf("Science") !== -1
                     })
                 }
                 return newsItems
@@ -104,7 +112,7 @@
         },
         methods: {
             getNewsItems: function() {
-                axios.get('http://localhost:8082/ServletProject_war_exploded/MainServlet')
+                axios.get('http://localhost:8082/JavaServlet_war_exploded/MainServlet')
                     .then(response => {
                         this.newsItems = response.data
                         

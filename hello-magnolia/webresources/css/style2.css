@@ -3,12 +3,12 @@
 	grid-template-columns: repeat(3, 1fr);
 	grid-gap: 0.5em;
 	grid-row-gap: 20px;
-	
 }
 
 .card {
     min-height: 100%;
 }
+
 
 .card-footer {
   position:absolute;
@@ -20,4 +20,8 @@
 .content-wrapper {
     position: relative;
     height: 350px;
+}
+
+.card-content {
+    padding: 3.5rem 0;
 }
