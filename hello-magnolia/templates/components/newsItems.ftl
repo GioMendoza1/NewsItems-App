@@ -1,11 +1,32 @@
-<#--  Place your DOM here  -->
 <div id="news-items">
     <div id="app">
         <!---Navbar Start-->
+        <navbar-comp
+            :filter-change-parent="filterChange"
+            :current-filter="currentFilter"
+            v-model="currentTextFilter"
+        ></navbar-comp>
+        <!--Article Start-->
+        <div class="grid-container">
+            <div v-for="newsItem in filteredNewsItems">
+                <news-items-comp
+                    :page-url="newsItem.pageUrl"
+                    :img-url="newsItem.imgUrl"
+                    :title="newsItem.title"
+                    :excerpt="newsItem.excerpt"
+                    :category="newsItem.category"
+                ></news-items-comp>
+            </div>    
+        </div>
+    </div>
+</div>
+
+<script type="text/x-template" id="navbar-template">
+    <div>
         <nav class="navbar" role="navigation" aria-label="main navigation">
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-end">
-                    <input class="input" type="text" v-model="currentTextFilter" placeholder="Filter By Title/Excerpt">
+                    <input class="input" type="text" :value="currentTextFilter" @input="$emit('input', $event.target.value)" placeholder="Filter By Title/Excerpt">
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                             {{ currentFilter }}
@@ -32,45 +53,43 @@
                 </div>
             </div>
         </nav>
-        <!--Article Start-->
-        <div class="grid-container">
-            <div v-for="newsItem in filteredNewsItems">
-                <a :href="newsItem.pageUrl" target="_blank">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img :src="newsItem.imgUrl" alt="Placeholder image">
-                            </figure>
-                        </div>
-                        <news-items-comp
-                            :title="newsItem.title"
-                            :excerpt="newsItem.excerpt"
-                            :category="newsItem.category"
-                        ></news-items-comp>
-                    </div>
-                </a>
-            </div>    
-        </div>
     </div>
-</div>
-
-<#-- Place your custom scripts here  -->
+</script>
+<script type="text/x-template" id="news-items-template">
+    <a :href="pageUrl" target="_blank">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image is-4by3">
+                    <img v-bind:src="imgUrl" alt="Placeholder image">
+                </figure>
+            </div>
+            <div class="content-wrapper">
+                <div class="card-content">
+                    <div class="media-content">
+                        <p class="title is-4">{{ title }}</p>
+                        <p class="subtitle is-6">{{ excerpt }}</p>
+                    </div>
+                </div>
+                <footer class="card-footer">
+                    <p class="card-footer-item"> {{ category }} </p>
+                </footer>
+            </div>
+        </div>
+    </a>
+</script>
 <script>
+    Vue.component('navbar-comp', {
+        props: ['currentTextFilter','filterChangeParent','currentFilter'],
+        template: '#navbar-template',
+        methods: {
+            filterChange: function(newFilter) {
+                this.filterChangeParent(newFilter);
+            }
+        }
+    })
     Vue.component('news-items-comp', {
-        props: ['title','excerpt','category'],
-        template: '\
-            <div class="content-wrapper">\
-                <div class="card-content">\
-                    <div class="media-content">\
-                        <p class="title is-4">{{ title }}</p>\
-                        <p class="subtitle is-6">{{ excerpt }}</p>\
-                    </div>\
-                </div>\
-                <footer class="card-footer">\
-                    <p class="card-footer-item"> {{ category }} </p>\
-                </footer>\
-            </div>\
-        '
+        props: ['pageUrl','imgUrl','title','excerpt','category'],
+        template: '#news-items-template'
     })
     new Vue({
         el: "#app",
