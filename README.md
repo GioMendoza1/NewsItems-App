@@ -10,11 +10,17 @@ The NewsItemsApp is a web application that scrapes articles from specified secti
 * News items can be filtered by title or excerpt through an input field
 
 ### Built With
+* [HTML/CSS](https://html.spec.whatwg.org/multipage/)
 * [VueJS](https://vuejs.org/)
 * [Bulma](https://bulma.io/)
 * [Java Servlet](https://docs.oracle.com/cd/E17802_01/products/products/servlet/2.5/docs/servlet-2_5-mr2/javax/servlet/package-summary.html)
-* [Tomcat](https://tomcat.apache.org/)
 * [Magnolia CMS](https://www.magnolia-cms.com/)
+
+### File Structure
+* HTML/VueJS code is found [here](https://github.com/GioMendoza1/NewsItemsApp/blob/master/hello-magnolia/templates/components/newsItems.ftl)
+* CSS is found [here](https://github.com/GioMendoza1/NewsItemsApp/tree/master/hello-magnolia/webresources/css)
+* Java code is found [here](https://github.com/GioMendoza1/NewsItemsApp/tree/master/JavaServlet/src/main/java)
+* Images of the design are found [here](https://github.com/GioMendoza1/NewsItemsApp/tree/master/images)
 
 <!-- CONTACT -->
 ## Contact
@@ -24,6 +30,7 @@ Project Link: [https://github.com/GioMendoza1/NewsItemsApp](https://github.com/G
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
+* [Tomcat](https://tomcat.apache.org/)
 * [Maven](https://maven.apache.org/)
 * [Jsoup](https://jsoup.org/)
 * [Gson](https://github.com/google/gson)
